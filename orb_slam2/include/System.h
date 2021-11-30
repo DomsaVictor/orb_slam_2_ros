@@ -135,6 +135,8 @@ public:
 
     std::vector<MapPoint*> GetAllMapPoints();
 
+    Tracking* GetTracker();
+
 private:
     bool SetCallStackSize (const rlim_t kNewStackSize);
 

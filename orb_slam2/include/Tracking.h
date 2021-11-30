@@ -85,7 +85,9 @@ public:
 
     // Use this function if you have deactivated local mapping and you only want to localize the camera.
     void InformOnlyTracking(const bool &flag);
-
+    
+    void SetDistance(const float d);
+    float GetDistance();
 
 public:
 
@@ -126,6 +128,8 @@ public:
     bool mbOnlyTracking;
 
     void Reset();
+
+    void SetCenterOfBB(float x, float y, float height, float width);
 
 protected:
 
@@ -235,6 +239,11 @@ protected:
     int nLevels;
     int fIniThFAST;
     int fMinThFAST;
+
+    float bb_x, bb_y, bb_height, bb_width;
+
+    // Real distance to the objects from the segmentation module. Used to compute the real scale of the map
+    float distance;
 };
 
 } //namespace ORB_SLAM

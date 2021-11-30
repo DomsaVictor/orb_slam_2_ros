@@ -117,6 +117,7 @@ public:
         return pKF1->mnId<pKF2->mnId;
     }
 
+    float ComputeRealDepth(const float distance, const float c_x, const float c_y, const float height, const float width);
 
     // The following variables are accesed from only 1 thread or never change (no mutex needed).
 public:

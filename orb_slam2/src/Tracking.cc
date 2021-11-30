@@ -66,7 +66,7 @@ Tracking::Tracking(System *pSys, ORBVocabulary* pVoc, FrameDrawer *pFrameDrawer,
     K.at<float>(0,2) = parameters.cx;
     K.at<float>(1,2) = parameters.cy;
     K.copyTo(mK);
-
+    // mK.at<float>(0, 0);
     cv::Mat DistCoef(4,1,CV_32F);
     DistCoef.at<float>(0) = parameters.k1;
     DistCoef.at<float>(1) = parameters.k2;
@@ -615,6 +615,14 @@ void Tracking::MonocularInitialization()
     }
 }
 
+void Tracking::SetCenterOfBB(float x, float y, float height, float width)
+{
+    bb_x = x;
+    bb_y = y;
+    bb_height = height;
+    bb_width = width;
+}
+
 void Tracking::CreateInitialMapMonocular()
 {
     // Create KeyFrames
@@ -638,13 +646,13 @@ void Tracking::CreateInitialMapMonocular()
         //Create MapPoint.
         cv::Mat worldPos(mvIniP3D[i]);
 
-        MapPoint* pMP = new MapPoint(worldPos,pKFcur,mpMap);
+        MapPoint* pMP = new MapPoint(worldPos, pKFcur, mpMap);
 
-        pKFini->AddMapPoint(pMP,i);
-        pKFcur->AddMapPoint(pMP,mvIniMatches[i]);
+        pKFini->AddMapPoint(pMP, i);
+        pKFcur->AddMapPoint(pMP, mvIniMatches[i]);
 
-        pMP->AddObservation(pKFini,i);
-        pMP->AddObservation(pKFcur,mvIniMatches[i]);
+        pMP->AddObservation(pKFini, i);
+        pMP->AddObservation(pKFcur, mvIniMatches[i]);
 
         pMP->ComputeDistinctiveDescriptors();
         pMP->UpdateNormalAndDepth();
@@ -664,11 +672,24 @@ void Tracking::CreateInitialMapMonocular()
     // Bundle Adjustment
     cout << "New Map created with " << mpMap->MapPointsInMap() << " points" << endl;
 
-    Optimizer::GlobalBundleAdjustemnt(mpMap,20);
+    Optimizer::GlobalBundleAdjustemnt(mpMap, 20);
 
     // Set median depth to 1
-    float medianDepth = pKFini->ComputeSceneMedianDepth(2);
-    float invMedianDepth = 1.0f/medianDepth;
+    // float medianDepth = pKFini->ComputeSceneMedianDepth(2);
+    // ROS_INFO("STARTING COMPUTING REAL DEPTH");
+    // mbf*(float)mThDepth/parameters.fx;
+    // medianDepth =  mbf * pKFini->ComputeRealDepth( 2 )/ mK.at<float>(0, 0);
+    // medianDepth = pKFini -> ComputeRealDepth(2);
+    // float invMedianDepth = 1.0f/medianDepth;
+
+    // Compute the real scale of the map based on data from the object detector
+    bb_x = 320;
+    bb_y = 240;
+    bb_height = 200;
+    bb_width = 200;
+    distance = 2;
+    float medianDepth = pKFini -> ComputeRealDepth(distance, bb_x, bb_y, bb_height, bb_width);
+    float invMedianDepth = medianDepth;
 
     if(medianDepth<0 || pKFcur->TrackedMapPoints(1)<100)
     {
@@ -1561,6 +1582,15 @@ void Tracking::InformOnlyTracking(const bool &flag)
     mbOnlyTracking = flag;
 }
 
+void Tracking::SetDistance(float d)
+{
+    distance = d;
+}
+
+float Tracking::GetDistance()
+{
+    return distance;
+}
 
 
 } //namespace ORB_SLAM

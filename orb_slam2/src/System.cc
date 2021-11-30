@@ -652,4 +652,9 @@ bool System::LoadMap(const string &filename) {
     return true;
 }
 
+Tracking* System::GetTracker()
+{
+    return mpTracker;
+}
+
 } //namespace ORB_SLAM

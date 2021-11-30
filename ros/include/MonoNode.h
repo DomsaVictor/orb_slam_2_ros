@@ -32,6 +32,7 @@
 #include <sensor_msgs/image_encodings.h>
 #include <opencv2/core/core.hpp>
 #include <tf/transform_broadcaster.h>
+#include <std_msgs/Float32MultiArray.h>
 
 #include "System.h"
 #include "Node.h"
@@ -43,8 +44,9 @@ class MonoNode : public Node
     MonoNode (const ORB_SLAM2::System::eSensor sensor, ros::NodeHandle &node_handle, image_transport::ImageTransport &image_transport);
     ~MonoNode ();
     void ImageCallback (const sensor_msgs::ImageConstPtr& msg);
-
+    void DistanceCallback(const std_msgs::Float32MultiArray msg);
   private:
+    ros::Subscriber distance_subscriber;
     image_transport::Subscriber image_subscriber;
 };
 
