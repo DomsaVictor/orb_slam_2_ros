@@ -2,6 +2,9 @@
 This is a modified version of the [orb_slam_2_ros](https://github.com/appliedAI-Initiative/orb_slam_2_ros/) and [ORB-SLAM2](https://github.com/raulmur/ORB_SLAM2)
 that can approximate the real scale of the map for a Monocular Camera, using external distance data from ROS publishers. In this project we used data from an image segmentation algorithm that puts bounding boxes around chairs and estimates the distance to the chairs. The code has been tested in real time on an [Nvidia Jetson Nano](https://developer.nvidia.com/embedded/jetson-nano-developer-kit) that was mounted on a [Sphero RVR](https://sphero.com/products/rvr) that we controlled from the laptop. Additionally, the chairs positions are marked on the map (as an ROS MarkerArray) and 2 maps of the same environment can be overlapped in order to see the differences between the chairs (marked on the overlapped map with a new MarkerArray with the name "/traformed_markers"). The visualization is done in [rviz](https://github.com/ros-visualization/rviz)
 
+Several changes were done in the ORB-SLAM2 source code. These include:
+- the initialization now waits for the distance to the chiars to be published in ROS as ""
+
 #### Map Overlapping
 Implemented in Python3 and was run on the laptop with a GTX 1050Ti using Point Clouds that are published in ROS with the publisher names:
 - "/orb_point_cloud_1" 
