@@ -1,3 +1,34 @@
+## Description
+This is a modified version of the [orb_slam_2_ros](https://github.com/appliedAI-Initiative/orb_slam_2_ros/) and [ORB-SLAM2](https://github.com/raulmur/ORB_SLAM2)
+that can approximate the real scale of the map for a Monocular Camera, using external distance data from ROS publishers. In this project we used data from an image segmentation algorithm that puts bounding boxes around chairs and estimates the distance to the chairs. The code has been tested in real time on an [Nvidia Jetson Nano](https://developer.nvidia.com/embedded/jetson-nano-developer-kit) that was mounted on a [Sphero RVR](https://sphero.com/products/rvr) that we controlled from the laptop. Additionally, the chairs positions are marked on the map (as an ROS MarkerArray) and 2 maps of the same environment can be overlapped in order to see the differences between the chairs (marked on the overlapped map with a new MarkerArray with the name "/traformed_markers"). The visualization is done in [rviz](https://github.com/ros-visualization/rviz)
+
+#### Map Overlapping
+Implemented in Python3 and was run on the laptop with a GTX 1050Ti using Point Clouds that are published in ROS with the publisher names:
+- "/orb_point_cloud_1" 
+- "/orb_point_cloud_2"
+
+The resulted merged map will be published with the name:
+- "/merged_map1" 
+
+This program is using: 
+- [probreg](https://github.com/neka-nat/probreg)
+- [sklearn](https://scikit-learn.org/stable/)
+- [matplotlib](https://github.com/matplotlib/matplotlib)
+- [pcl](https://github.com/strawlab/python-pcl)
+
+You can see the results [here](https://youtube.com/playlist?list=PLMd3zj7-P7Nbgr7T5npm9I0bo_tCSmxTs).
+
+### Additional Citations:
+
+    @software{probreg,
+        author = {{Kenta-Tanaka et al.}},
+        title = {probreg},
+        url = {https://probreg.readthedocs.io/en/latest/},
+        version = {0.1.6},
+        date = {2019-9-29},
+    }
+
+
 # ORB-SLAM2
 **ORB-SLAM2 Authors:** [Raul Mur-Artal](http://webdiis.unizar.es/~raulmur/), [Juan D. Tardos](http://webdiis.unizar.es/~jdtardos/), [J. M. M. Montiel](http://webdiis.unizar.es/~josemari/) and [Dorian Galvez-Lopez](http://doriangalvez.com/) ([DBoW2](https://github.com/dorian3d/DBoW2)).
 The original implementation can be found [here](https://github.com/raulmur/ORB_SLAM2.git).
