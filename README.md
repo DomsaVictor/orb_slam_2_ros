@@ -21,6 +21,8 @@ This program is using:
 
 You can see the results [here](https://youtube.com/playlist?list=PLMd3zj7-P7Nbgr7T5npm9I0bo_tCSmxTs).
 
+Further updates are sure to follow
+
 ### Additional Citations:
 
     @software{probreg,
